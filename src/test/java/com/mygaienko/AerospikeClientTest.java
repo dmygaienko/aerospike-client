@@ -39,4 +39,19 @@ public class AerospikeClientTest {
         System.out.println(record);
     }
 
+    @Test
+    public void testWriteUser() {
+        Key key = new Key("test", "users", 2222);
+        Bin bin1 = new Bin("username", "test user");
+        Bin bin2 = new Bin("password", "test password");
+        Bin bin3 = new Bin("gender", "test gender");
+        Bin bin4 = new Bin("region", "test region");
+        Bin bin5 = new Bin("lasttweeted", 0);
+        Bin bin6 = new Bin("tweetcount", 0);
+        client.put(new WritePolicy(), key, bin1, bin2, bin3, bin4, bin5, bin6);
+
+        Record record = client.get(new Policy(), key);
+        System.out.println(record);
+    }
+
 }
