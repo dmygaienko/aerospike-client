@@ -54,28 +54,29 @@ public class AerospikeClientPerformanceTest {
 
     @Test
     public void testWriteUser() {
-        StopWatch watch = new StopWatch();
-        watch.start();
-
-        RecordSet record = findRecord();
-
-        watch.stop();
-        System.out.println("Time to get " + watch.getTime(TimeUnit.MILLISECONDS) + "\n" + record);
+        findWithTime();
     }
 
     @Test
     public void testWriteUserAndCreateIndex() {
+        createIndex();
+        findWithTime();
+    }
+
+    private void createIndex() {
         IndexTask task = client.createIndex(null, "test", "users",
                 "region_index", "region", IndexType.STRING);
         task.waitTillComplete(100);
+    }
 
+    private void findWithTime() {
         StopWatch watch = new StopWatch();
         watch.start();
 
         RecordSet record = findRecord();
 
         watch.stop();
-        System.out.println("Time to get " + watch.getTime(TimeUnit.MILLISECONDS) + "\n" + record);
+        System.out.println("Time to get " + watch.getTime(TimeUnit.NANOSECONDS) + "\n" + record);
     }
 
     private RecordSet findRecord() {
